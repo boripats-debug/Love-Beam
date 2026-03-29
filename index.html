@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ถึงหนูบีม 💖</title>
+
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    color: white;
+    padding: 50px;
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 35px;
+}
+
+#content {
+    margin-top: 30px;
+}
+
+/* เอฟเฟกต์รูป */
+img {
+    width: 250px;
+    border-radius: 20px;
+    margin-top: 20px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.8s ease;
+}
+
+img.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 20px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+#nextBtn {
+    background-color: #ff4d6d;
+    color: white;
+}
+
+#yesBtn {
+    background-color: #ff0066;
+    color: white;
+    display: none;
+}
+
+#noBtn {
+    background-color: gray;
+    position: relative;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 เพลง -->
+<audio id="bgm" loop>
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<h1>เรามีอะไรจะบอก... 💖</h1>
+
+<div id="content">
+    <p id="text">กดปุ่มนี้ก่อนนะ 😊</p>
+    <img id="image" src="">
+</div>
+
+<button id="nextBtn" onclick="nextStep()">กดดู 💕</button>
+<button id="yesBtn" onclick="sayYes()">เป็นแฟนกันนะ 💖</button>
+<button id="noBtn" onclick="sayNo()">ไม่เป็นแฟน 😅</button>
+
+<script>
+
+let musicStarted = false;
+
+// ===== ข้อความ =====
+const messages = [
+    "ตั้งแต่วันที่ได้รู้จักกัน... 💘",
+    "เค้าชอบเธอจริงๆนะ 💘",
+    "ขอบคุณที่อยู่ด้วยกัน ทั้งช่วงที่มีความสุขและทุกข์ 💘",
+    "อาจจะมีทะเลาะกันบ้าง งอนกันบ้าง 💘",
+    "แต่เค้าก็ไม่เคยอยากเสียเธอไปเลยนะ 💘",
+    "อยู่กับเธอแล้วเค้าสบายใจมากๆ 💘",
+    "มันเป็นความรู้สึกที่อธิบายไม่ค่อยถูก แต่โคตรดีเลย 💘",
+    "เค้าชอบที่เธอเป็นเธอแบบนี้จริงๆ 💘",
+    "อยู่น่ารักแบบนี้ไปนานๆเลยนะ 💘",
+    "เค้ารักหนูบีมนะ 💘❤️",
+    "แล้ว...เป็นแฟนกันนะ 💖🥺"
+];
+
+// ===== รูป (ใส่รูปคุณตรงนี้) =====
+const images = [
+    "img1.jpg",
+    "img2.jpg",
+    "img3.jpg",
+    "img4.jpg"
+];
+
+let step = 0;
+
+// ===== พิมพ์ทีละตัว =====
+function typeText(text) {
+    let i = 0;
+    let speed = 50;
+    let target = document.getElementById("text");
+    target.innerHTML = "";
+
+    function typing() {
+        if (i < text.length) {
+            target.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+    typing();
+}
+
+// ===== ปุ่มถัดไป =====
+function nextStep() {
+
+    // 🎵 เล่นเพลง
+    if (!musicStarted) {
+        let audio = document.getElementById("bgm");
+        audio.play().catch(() => {});
+        musicStarted = true;
+    }
+
+    if (step < messages.length) {
+
+        typeText(messages[step]);
+
+        let img = document.getElementById("image");
+        img.src = images[step % images.length];
+
+        img.classList.remove("show");
+        setTimeout(() => {
+            img.classList.add("show");
+        }, 100);
+
+        step++;
+
+    } else {
+        document.getElementById("text").innerText = "เป็นแฟนกับเราได้มั้ย 💖🥺";
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("yesBtn").style.display = "inline-block";
+    }
+}
+
+// ===== ตกลง =====
+function sayYes() {
+    document.body.innerHTML = "<h1>เย้! รักหนูบีมนะ 💖🥰</h1>";
+
+    setInterval(() => {
+        let heart = document.createElement("div");
+        heart.innerHTML = "💖";
+        heart.style.position = "fixed";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.top = "100vh";
+        heart.style.fontSize = "30px";
+        document.body.appendChild(heart);
+
+        let move = setInterval(() => {
+            heart.style.top = (heart.offsetTop - 2) + "px";
+            if (heart.offsetTop < 0) {
+                clearInterval(move);
+                heart.remove();
+            }
+        }, 20);
+    }, 300);
+}
+
+// ===== ไม่ =====
+function sayNo() {
+    alert("ยังไม่ให้ตอบข้อนี้น้า 😝 ลองคิดใหม่อีกทีนะ 💕");
+
+    let btn = document.getElementById("noBtn");
+    btn.style.position = "absolute";
+    btn.style.top = Math.random() * window.innerHeight + "px";
+    btn.style.left = Math.random() * window.innerWidth + "px";
+}
+
+</script>
+
+</body>
+</html>
